@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\Tcp_Server.dir/objects.a
+C:\MinGW\bin\ar.exe qc CMakeFiles\Tcp_Server.dir/objects.a @CMakeFiles\Tcp_Server.dir\objects1.rsp
+C:\MinGW\bin\g++.exe -Wl,--whole-archive CMakeFiles\Tcp_Server.dir/objects.a -Wl,--no-whole-archive -o bin\Tcp_Server.exe -Wl,--out-implib,libTcp_Server.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Tcp_Server.dir\linkLibs.rsp

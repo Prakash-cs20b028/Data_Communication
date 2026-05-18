@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.10)
+project(Data_Communication)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+add_executable(Tcp_Client Tcp_client.cpp)
+add_executable(Tcp_Server Tcp_server.cpp)
+
+target_link_libraries(Tcp_Client ws2_32)
+target_link_libraries(Tcp_Server ws2_32)

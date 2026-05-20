@@ -1,6 +1,7 @@
 CMakeFiles/Tcp_Client.dir/Tcp_client.cpp.obj: \
  C:\Users\prakash\Desktop\POTD\Data_Communication\Windows\Tcp_client.cpp \
- c:\mingw\x86_64-w64-mingw32\include\winsock.h \
+ c:\mingw\x86_64-w64-mingw32\include\winsock2.h \
+ c:\mingw\x86_64-w64-mingw32\include\_mingw_unicode.h \
  c:\mingw\x86_64-w64-mingw32\include\windows.h \
  c:\mingw\x86_64-w64-mingw32\include\_mingw.h \
  c:\mingw\x86_64-w64-mingw32\include\_mingw_mac.h \
@@ -22,7 +23,6 @@ CMakeFiles/Tcp_Client.dir/Tcp_client.cpp.obj: \
  c:\mingw\x86_64-w64-mingw32\include\sal.h \
  c:\mingw\x86_64-w64-mingw32\include\driverspecs.h \
  c:\mingw\x86_64-w64-mingw32\include\winnt.h \
- c:\mingw\x86_64-w64-mingw32\include\_mingw_unicode.h \
  c:\mingw\x86_64-w64-mingw32\include\ctype.h \
  c:\mingw\x86_64-w64-mingw32\include\apiset.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\intrin-impl.h \
@@ -189,6 +189,7 @@ CMakeFiles/Tcp_Client.dir/Tcp_client.cpp.obj: \
  c:\mingw\x86_64-w64-mingw32\include\rpcasync.h \
  c:\mingw\x86_64-w64-mingw32\include\shellapi.h \
  c:\mingw\x86_64-w64-mingw32\include\winperf.h \
+ c:\mingw\x86_64-w64-mingw32\include\winsock.h \
  c:\mingw\x86_64-w64-mingw32\include\wincrypt.h \
  c:\mingw\x86_64-w64-mingw32\include\bcrypt.h \
  c:\mingw\x86_64-w64-mingw32\include\ncrypt.h \
@@ -225,16 +226,17 @@ CMakeFiles/Tcp_Client.dir/Tcp_client.cpp.obj: \
  c:\mingw\x86_64-w64-mingw32\include\winsvc.h \
  c:\mingw\x86_64-w64-mingw32\include\mcx.h \
  c:\mingw\x86_64-w64-mingw32\include\imm.h \
+ c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_ws1_undef.h \
  c:\mingw\x86_64-w64-mingw32\include\_timeval.h \
  c:\mingw\x86_64-w64-mingw32\include\_bsd_types.h \
  c:\mingw\x86_64-w64-mingw32\include\inaddr.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_socket_types.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_fd_types.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_ip_types.h \
- c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_ip_mreq1.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_wsadata.h \
- c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_xmitfile.h \
+ c:\mingw\x86_64-w64-mingw32\include\ws2def.h \
  c:\mingw\x86_64-w64-mingw32\include\psdk_inc\_wsa_errnos.h \
+ c:\mingw\x86_64-w64-mingw32\include\qos.h \
  c:\mingw\include\c++\9.2.0\iostream c:\mingw\include\c++\9.2.0\ostream \
  c:\mingw\include\c++\9.2.0\ios c:\mingw\include\c++\9.2.0\iosfwd \
  c:\mingw\include\c++\9.2.0\bits\stringfwd.h \
@@ -336,4 +338,33 @@ CMakeFiles/Tcp_Client.dir/Tcp_client.cpp.obj: \
  c:\mingw\include\c++\9.2.0\bits\basic_ios.tcc \
  c:\mingw\include\c++\9.2.0\bits\ostream.tcc \
  c:\mingw\include\c++\9.2.0\istream \
- c:\mingw\include\c++\9.2.0\bits\istream.tcc
+ c:\mingw\include\c++\9.2.0\bits\istream.tcc \
+ c:\mingw\include\c++\9.2.0\thread c:\mingw\include\c++\9.2.0\chrono \
+ c:\mingw\include\c++\9.2.0\ratio c:\mingw\include\c++\9.2.0\ctime \
+ c:\mingw\x86_64-w64-mingw32\include\time.h \
+ c:\mingw\x86_64-w64-mingw32\include\pthread_time.h \
+ c:\mingw\include\c++\9.2.0\bits\parse_numbers.h \
+ c:\mingw\include\c++\9.2.0\memory \
+ c:\mingw\include\c++\9.2.0\bits\stl_construct.h \
+ c:\mingw\include\c++\9.2.0\bits\stl_uninitialized.h \
+ c:\mingw\include\c++\9.2.0\utility \
+ c:\mingw\include\c++\9.2.0\bits\stl_relops.h \
+ c:\mingw\include\c++\9.2.0\bits\stl_tempbuf.h \
+ c:\mingw\include\c++\9.2.0\bits\stl_raw_storage_iter.h \
+ c:\mingw\include\c++\9.2.0\ext\concurrence.h \
+ c:\mingw\include\c++\9.2.0\bits\uses_allocator.h \
+ c:\mingw\include\c++\9.2.0\bits\unique_ptr.h \
+ c:\mingw\include\c++\9.2.0\tuple c:\mingw\include\c++\9.2.0\array \
+ c:\mingw\include\c++\9.2.0\bits\invoke.h \
+ c:\mingw\include\c++\9.2.0\bits\shared_ptr.h \
+ c:\mingw\include\c++\9.2.0\bits\shared_ptr_base.h \
+ c:\mingw\include\c++\9.2.0\bits\allocated_ptr.h \
+ c:\mingw\include\c++\9.2.0\bits\refwrap.h \
+ c:\mingw\include\c++\9.2.0\ext\aligned_buffer.h \
+ c:\mingw\include\c++\9.2.0\bits\shared_ptr_atomic.h \
+ c:\mingw\include\c++\9.2.0\bits\atomic_base.h \
+ c:\mingw\include\c++\9.2.0\bits\atomic_lockfree_defines.h \
+ c:\mingw\include\c++\9.2.0\backward\auto_ptr.h \
+ c:\mingw\include\c++\9.2.0\pstl\glue_memory_defs.h \
+ c:\mingw\include\c++\9.2.0\pstl\execution_defs.h \
+ c:\mingw\include\c++\9.2.0\atomic

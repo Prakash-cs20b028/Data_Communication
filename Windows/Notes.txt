@@ -1,9 +1,20 @@
 //Installation
+Windows/linux
 
 g++
 cmake
 
-//commands to run the cmake and make from cmd 
+//commands to run the cmake and make from cmd in windows
 
 cmake -G "MinGW Makefiles" ..
 mingw32-make
+
+//commands to run the cmake and make from cmd in Linux
+
+If I am in the root dir(cmakelist.txt), use 
+
+cmake -S . -B build
+cmake --build build
+
+if I am in the build, use
+cmake ..

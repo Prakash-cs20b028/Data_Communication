@@ -13,13 +13,14 @@ using namespace std;
 
 int main()
 {
-    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+    int clientSocket = socket(AF_INET, SOCK_STREAM, 0); // af_inet-> ipv4 or ipv6, sock_stream-> tcp, 0-> default protocol
     if (clientSocket < 0)
     {
         cout << "Failed to create socket." << endl;
         return 1;
     }
 
+    // Prepares the address of the server.
     sockaddr_in serverAddress{};
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(8080);

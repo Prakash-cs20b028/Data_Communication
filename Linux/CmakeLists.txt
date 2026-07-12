@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.10)
+project(Data_Communication)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+find_package(Threads REQUIRED)
+
+add_executable(Tcp_Client Tcp_client.cpp)
+add_executable(Tcp_Server Tcp_server.cpp)
+
+target_link_libraries(Tcp_Client PRIVATE Threads::Threads)
+target_link_libraries(Tcp_Server PRIVATE Threads::Threads)
+
+if(WIN32)
+    target_link_libraries(Tcp_Client PRIVATE ws2_32)
+    target_link_libraries(Tcp_Server PRIVATE ws2_32)
+endif()

@@ -1,0 +1,4 @@
+/mnt/c/Users/prakash/Desktop/Projects/Data_Communication/Linux/build/CMakeFiles/Tcp_Client.dir
+/mnt/c/Users/prakash/Desktop/Projects/Data_Communication/Linux/build/CMakeFiles/Tcp_Server.dir
+/mnt/c/Users/prakash/Desktop/Projects/Data_Communication/Linux/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/prakash/Desktop/Projects/Data_Communication/Linux/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,13 @@
+//Installation
+Windows
+
+g++
+cmake
+
+//commands to run the cmake and make from cmd 
+
+cmake -G "MinGW Makefiles" ..
+mingw32-make
+
+Linux
+

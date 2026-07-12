@@ -1,5 +1,8 @@
-#include<winsock.h>
-#include<iostream>  
+#include <winsock2.h>
+#include <iostream>
+#include <string>
+#include <thread>
+#include <atomic>
 
 using namespace std;
 
@@ -7,13 +10,13 @@ int main()
 {
     WSADATA wsaData;
     WORD wVersionRequested = MAKEWORD(2, 2);
-    if (WSAStartup(wVersionRequested, &wsaData) != 0)  //initialize Winsock
+    if (WSAStartup(wVersionRequested, &wsaData) != 0)
     {
         cout << "Failed to initialize Winsock." << endl;
         return 1;
     }
 
-    SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); //create a TCP socket
+    SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (serverSocket == INVALID_SOCKET)
     {
         cout << "Failed to create socket." << endl;
@@ -26,7 +29,7 @@ int main()
     serverAddress.sin_port = htons(8080);
     serverAddress.sin_addr.s_addr = INADDR_ANY;
 
-    if (bind(serverSocket, (sockaddr*)&serverAddress, sizeof(serverAddress)) == SOCKET_ERROR) //bind the socket to an address and port
+    if (bind(serverSocket, (sockaddr*)&serverAddress, sizeof(serverAddress)) == SOCKET_ERROR)
     {
         cout << "Failed to bind socket." << endl;
         closesocket(serverSocket);
@@ -34,7 +37,7 @@ int main()
         return 1;
     }
 
-    if (listen(serverSocket, SOMAXCONN) == SOCKET_ERROR) //listen for incoming connections
+    if (listen(serverSocket, SOMAXCONN) == SOCKET_ERROR)
     {
         cout << "Failed to listen on socket." << endl;
         closesocket(serverSocket);
@@ -46,40 +49,79 @@ int main()
 
     while (true)
     {
-        SOCKET clientSocket = accept(serverSocket, NULL, NULL); //accept an incoming connection
+        SOCKET clientSocket = accept(serverSocket, NULL, NULL);
         if (clientSocket == INVALID_SOCKET)
         {
             cout << "Failed to accept connection." << endl;
-            continue; //continue accepting other connections
+            continue;
         }
 
         cout << "Client connected!" << endl;
 
-        // Here you can add code to handle communication with the client
-        while (true)
+        atomic<bool> running(true);
+        thread receiveThread([&]() {
+            while (running)
+            {
+                char buffer[1024];
+                int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+                if (recvResult > 0)
+                {
+                    buffer[recvResult] = '\0';
+                    cout << "Client: " << buffer << endl;
+                    if (string(buffer) == "exit")
+                    {
+                        cout << "Client requested to close the connection." << endl;
+                        running = false;
+                        break;
+                    }
+                }
+                else if (recvResult == 0)
+                {
+                    cout << "Client disconnected." << endl;
+                    running = false;
+                    break;
+                }
+                else
+                {
+                    cout << "Receive error." << endl;
+                    running = false;
+                    break;
+                }
+            }
+        });
+
+        while (running)
         {
-            char buffer[1024];
-            int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0); //receive message from the client
-            if (recvResult > 0)
+            string response;
+            cout << "Enter a message to send to the client (or 'exit' to quit): ";
+            if (!getline(cin, response))
+                break;
+
+            int sendResult = send(clientSocket, response.c_str(), (int)response.length(), 0);
+            if (sendResult == SOCKET_ERROR)
             {
-                buffer[recvResult] = '\0'; //null-terminate the received message
-                cout << "Received from client: " << buffer << endl;
+                cout << "Failed to send message." << endl;
+                running = false;
+                break;
             }
-            else if (recvResult == 0)
+
+            if (response == "exit")
             {
-                cout << "Client disconnected." << endl;
-                break; //client disconnected
-            }
-            else
-            {
-                cout << "Failed to receive message." << endl;
-                break; //error occurred
+                running = false;
+                break;
             }
         }
-        closesocket(clientSocket); //close the client socket after handling communication
+
+        running = false;
+        shutdown(clientSocket, SD_BOTH);
+        if (receiveThread.joinable())
+            receiveThread.join();
+
+        closesocket(clientSocket);
+        cout << "Connection closed. Waiting for next client..." << endl;
     }
 
-    closesocket(serverSocket); //close the server socket
-    WSACleanup(); //clean up Winsock
+    closesocket(serverSocket);
+    WSACleanup();
     return 0;
 }

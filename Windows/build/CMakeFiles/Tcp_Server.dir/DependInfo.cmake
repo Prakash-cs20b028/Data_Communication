@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/prakash/Desktop/POTD/Data_Communication/Windows/Tcp_server.cpp" "CMakeFiles/Tcp_Server.dir/Tcp_server.cpp.obj" "gcc" "CMakeFiles/Tcp_Server.dir/Tcp_server.cpp.obj.d"
+  "C:/Users/prakash/Desktop/Projects/Data_Communication/Windows/Tcp_server.cpp" "CMakeFiles/Tcp_Server.dir/Tcp_server.cpp.obj" "gcc" "CMakeFiles/Tcp_Server.dir/Tcp_server.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

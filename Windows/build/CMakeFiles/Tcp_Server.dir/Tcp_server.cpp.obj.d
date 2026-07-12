@@ -1,5 +1,5 @@
 CMakeFiles/Tcp_Server.dir/Tcp_server.cpp.obj: \
- C:\Users\prakash\Desktop\POTD\Data_Communication\Windows\Tcp_server.cpp \
+ C:\Users\prakash\Desktop\Projects\Data_Communication\Windows\Tcp_server.cpp \
  c:\mingw\x86_64-w64-mingw32\include\winsock2.h \
  c:\mingw\x86_64-w64-mingw32\include\_mingw_unicode.h \
  c:\mingw\x86_64-w64-mingw32\include\windows.h \

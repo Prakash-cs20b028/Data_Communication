@@ -1,15 +1,15 @@
-//Installation
+....................Installation........................
 Windows/linux
 
 g++
 cmake
 
-//commands to run the cmake and make from cmd in windows
+....................commands to run the cmake and make from cmd in windows..................
 
 cmake -G "MinGW Makefiles" ..
 mingw32-make
 
-//commands to run the cmake and make from cmd in Linux
+....................commands to run the cmake and make from cmd in Linux...................
 
 If I am in the root dir(cmakelist.txt), use 
 
@@ -18,3 +18,5 @@ cmake --build build
 
 if I am in the build, use
 cmake ..
+
+1. run_tcp.sh file is used to build the project and launch server and client on the terminal. 

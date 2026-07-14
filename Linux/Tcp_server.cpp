@@ -11,6 +11,70 @@
 
 using namespace std;
 
+atomic<bool> running(true);
+void sendMessageThread(atomic<bool>& running, int clientSocket)
+{
+    while (running)
+    {
+        string input;
+        cout << "Send to the client: ";
+
+        if (!getline(cin, input))
+        {
+            running = false;
+            break;
+        }
+
+        int sendResult = send(clientSocket, input.c_str(), input.length(), 0);
+        if (sendResult < 0)
+        {
+            cout << "Failed to send message." << endl;
+            running = false;
+            break;
+        }
+
+        if (input == "exit")
+        {
+            running = false;
+            break;
+        }
+    }
+}
+void receiveMessageThread(atomic<bool>& running, int clientSocket)
+{
+    while (running)
+    {
+        char buffer[1024];
+        int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+
+        if (recvResult > 0)
+        {
+            buffer[recvResult] = '\0';
+            cout << "Client: " << buffer << endl;
+
+            if (strcmp(buffer, "exit") == 0)
+            {
+                cout << "Client ended the connection." << endl;
+                running = false;
+                break;
+            }
+        }
+        else if (recvResult == 0)
+        {
+            cout << "Client disconnected." << endl;
+            running = false;
+            break;
+        }
+        else
+        {
+            if (running)
+                cout << "Receive error." << endl;
+
+            running = false;
+            break;
+        }
+    }
+}
 int main()
 {
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -57,72 +121,18 @@ int main()
 
     cout << "Client connected!" << endl;
 
-    atomic<bool> running(true);
+    thread t1(sendMessageThread, std::ref(running), clientSocket);
+    thread t2(receiveMessageThread, std::ref(running), clientSocket);
 
-    thread receiveThread([&]() {
-        while (running)
-        {
-            char buffer[1024];
-            int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
-
-            if (recvResult > 0)
-            {
-                buffer[recvResult] = '\0';
-                cout << "Client: " << buffer << endl;
-
-                if (strcmp(buffer, "exit") == 0)
-                {
-                    cout << "Client ended the connection." << endl;
-                    running = false;
-                    break;
-                }
-            }
-            else if (recvResult == 0)
-            {
-                cout << "Client disconnected." << endl;
-                running = false;
-                break;
-            }
-            else
-            {
-                if (running)
-                    cout << "Receive error." << endl;
-
-                running = false;
-                break;
-            }
-        }
-    });
-
-    while (running)
-    {
-        string input;
-        cout << "Enter a message to send to the client (or 'exit' to quit): ";
-
-        if (!getline(cin, input))
-            break;
-
-        int sendResult = send(clientSocket, input.c_str(), input.length(), 0);
-        if (sendResult < 0)
-        {
-            cout << "Failed to send message." << endl;
-            running = false;
-            break;
-        }
-
-        if (input == "exit")
-        {
-            running = false;
-            break;
-        }
-    }
+    if(t1.joinable())
+        t1.join();  
 
     running = false;
 
     shutdown(clientSocket, SHUT_RDWR);
 
-    if (receiveThread.joinable())
-        receiveThread.join();
+    if (t2.joinable())
+        t2.join();
 
     close(clientSocket);
     close(serverSocket);

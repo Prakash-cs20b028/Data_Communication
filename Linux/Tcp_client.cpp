@@ -11,6 +11,71 @@
 
 using namespace std;
 
+atomic<bool> running(true);
+
+void sendMessageThread(atomic<bool>& running, int clientSocket)
+{
+    while (running)
+    {
+        string input;
+        cout << "Send to the server: ";
+
+        if (!getline(cin, input))
+        {
+            running = false;
+            break;
+        }
+
+        int sendResult = send(clientSocket, input.c_str(), input.length(), 0);
+        if (sendResult < 0)
+        {
+            cout << "Failed to send message." << endl;
+            running = false;
+            break;
+        }
+
+        if (input == "exit")
+        {
+            running = false;
+            break;
+        }
+    }
+}
+void receiveMessageThread(atomic<bool>& running, int clientSocket)
+{
+    while (running)
+    {
+        char buffer[1024];
+        int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+
+        if (recvResult > 0)
+        {
+            buffer[recvResult] = '\0';
+            if(strcmp(buffer, "exit") == 0)
+            {
+                cout << "Server ended the connection." << endl;
+                running = false;
+                break;
+            }
+            cout << "Server: " << buffer << endl;
+        }
+        else if (recvResult == 0)
+        {
+            cout << "Server closed the connection." << endl;
+            running = false;
+            break;
+        }
+        else
+        {
+            if (running)
+                cout << "Receive error." << endl;
+
+            running = false;
+            break;
+        }
+    }
+}
+
 int main()
 {
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0); // af_inet-> ipv4 or ipv6, sock_stream-> tcp, 0-> default protocol
@@ -41,65 +106,19 @@ int main()
 
     cout << "Connected to server!" << endl;
 
-    atomic<bool> running(true);
 
-    thread receiveThread([&]() {
-        while (running)
-        {
-            char buffer[1024];
-            int recvResult = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+    thread t1(sendMessageThread, std::ref(running), clientSocket);
+    thread t2(receiveMessageThread, std::ref(running), clientSocket);
 
-            if (recvResult > 0)
-            {
-                buffer[recvResult] = '\0';
-                cout << "Server: " << buffer << endl;
-            }
-            else if (recvResult == 0)
-            {
-                cout << "Server closed the connection." << endl;
-                running = false;
-                break;
-            }
-            else
-            {
-                if (running)
-                    cout << "Receive error." << endl;
-
-                running = false;
-                break;
-            }
-        }
-    });
-
-    while (running)
-    {
-        string input;
-        cout << "Enter a message to send to the server (or 'exit' to quit): ";
-
-        if (!getline(cin, input))
-            break;
-
-        int sendResult = send(clientSocket, input.c_str(), input.length(), 0);
-        if (sendResult < 0)
-        {
-            cout << "Failed to send message." << endl;
-            running = false;
-            break;
-        }
-
-        if (input == "exit")
-        {
-            running = false;
-            break;
-        }
-    }
+    if (t1.joinable())
+        t1.join();
 
     running = false;
 
     shutdown(clientSocket, SHUT_RDWR);
 
-    if (receiveThread.joinable())
-        receiveThread.join();
+    if (t2.joinable())
+        t2.join();
 
     close(clientSocket);
 
